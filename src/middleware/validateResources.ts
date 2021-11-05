@@ -4,11 +4,13 @@ import {AnyZodObject} from "zod";
 const validate = (schema: AnyZodObject) => (req: Request, res: Response, next: NextFunction) =>{
 
     try {
+        console.log("validateResources");
         schema.parse({
             body: req.body,
             query: req.query,
-            params: req.params
+            params: req.params,
         })
+        next();
     } catch (e: any) {
         return res.status(400).send(e.errors);
     }
