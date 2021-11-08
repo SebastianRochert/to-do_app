@@ -11,10 +11,10 @@ const app = express();
 
 app.use(express.json); // Didnt really understand what this does and why its needed
 
-app.use("/api/todos", log);
+//app.use("/api/todos", log);
 
 app.listen(port, async () => {
-    logger.info(`"App is running at http://localhost:${port} `);
+    logger.info(`App is running at http://localhost:${port} `);
     await connect();
 
     routes(app);

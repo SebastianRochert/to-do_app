@@ -12,10 +12,7 @@ export const createTodoSchema = object({
         complete: string({
             required_error: "Complete is required!",
         }),
-    }).refine((data) => data.title.length >= 6,  {
-        message: "Title to short!",
-        path: ["title"],
-    })
+    }),
 });
 
 export type CreateTodoInput = TypeOf<typeof createTodoSchema>;

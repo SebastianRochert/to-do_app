@@ -16,4 +16,4 @@ export async function createTodoHandler(
         logger.error(e);
         return res.status(409).send(e.message); // 409 conflict, violation of the unique restriction on the title field. Means a to do with that title is already existing
     }
-};
+}

@@ -10,7 +10,7 @@ export interface TodoDocument extends mongoose.Document {
 }
 
 const todoSchema = new mongoose.Schema({
-    title: {type: String, required: true},
+    title: {type: String, required: true, unique: true},
     description: {type: String, required: true},
     //priority: {type: Number, required: false},
     complete: {type: String, required: true},
