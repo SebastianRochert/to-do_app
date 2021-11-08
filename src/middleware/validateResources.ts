@@ -1,5 +1,6 @@
 import {Request, Response, NextFunction} from "express";
 import {AnyZodObject} from "zod";
+import logger from "../utils/logger";
 
 const validate =
     (schema: AnyZodObject) =>
@@ -13,6 +14,7 @@ const validate =
         });
         next();
     } catch (e: any) {
+        logger.info("validate parse failed!");
         return res.status(400).send(e.errors);
     }
 }
