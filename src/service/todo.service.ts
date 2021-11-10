@@ -15,7 +15,7 @@ export async function findTodo(query: FilterQuery<TodoDocument>, options: QueryO
 }
 
 export async function findTodos(query: FilterQuery<TodoDocument>){
-    return TodoModel.find(query).lean();
+    return TodoModel.find(query, 'title description priority complete');
 }
 
 export async function deleteTodo(query: FilterQuery<TodoDocument>){

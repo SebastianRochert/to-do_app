@@ -1,12 +1,16 @@
 import logger from "pino";
 import dayjs from "dayjs";
 
-const log = logger({
-    prettyPrint: true,
-    base:{
-        pid: false //Process ID
+const pino = require('pino')
+const log = pino({
+    transport: {
+        target: 'pino-pretty',
+        options: {
+            ignore: 'pid,hostname',
+        }
     },
     timestamp: () => `,"time":"${dayjs().format()}"`,
-});
+})
+
 
 export default log;

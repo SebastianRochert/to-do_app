@@ -3,7 +3,36 @@ import logger from "../utils/logger";
 import {createTodo, deleteTodo, findTodo, findTodos} from "../service/todo.service";
 import {CreateTodoInput, DeleteTodoInput} from "../schema/todo.schema";
 import {omit} from "lodash";
+import {bindActionCreators} from "redux";
+import {actionCreators} from "../redux/index";
+import {useAppDispatch} from "../redux/hooks";
 
+
+
+export function createTodoHandlerRedux(
+    req: Request<{}, {}, CreateTodoInput["body"]>,
+    res: Response) {
+
+    console.log("todo.controller.ts line 16");
+
+    const dispatch = useAppDispatch();
+
+    console.log("inside createTodoHandlerRedux");
+
+    const {createTodoRedux, getTodoRedux, deleteTodoRedux} = bindActionCreators(actionCreators, dispatch);
+    try {
+        // create Action, in der createTodoRedux wird die Action direkt dispatched
+        createTodoRedux(req.body);
+
+        logger.info("Todo was successfully added to the Todo-List!")
+
+    } catch (e: any) {
+        logger.error(e);
+        return res.status(409).send(e.message); // 409 conflict, violation of the unique restriction on the title field. Means a to do with that title is already existing
+    }
+}
+
+/*
 export async function createTodoHandler(
     req: Request<{}, {}, CreateTodoInput["body"]>,
     res: Response) {
@@ -19,6 +48,8 @@ export async function createTodoHandler(
         return res.status(409).send(e.message); // 409 conflict, violation of the unique restriction on the title field. Means a to do with that title is already existing
     }
 }
+
+ */
 
 export async function getTodoHandler(req: Request, res: Response) {
     const todoId = req.params.todoId;
@@ -38,7 +69,8 @@ export async function getTodosHandler(req: Request, res: Response) {
         return res.sendStatus(404);
     }
     logger.info("Todo was successfully displayed!")
-    return res.send(omit(todos, "_id", "__v", "createdAt", "updatedAt"));
+
+    return res.send(todos);
 }
 
 export async function deleteTodoHandler(req: Request<DeleteTodoInput["params"]>, res: Response) {
