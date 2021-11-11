@@ -7,7 +7,6 @@ import {store} from "../redux";
 import {actionCreators} from "../redux/index";
 import {TodoDocument} from "../models/todo.model";
 import {bindActionCreators} from "redux";
-//import {deleteTodoAction, getTodoAction} from "../redux/action-creators";
 
 const {createTodoAction, getTodoAction, deleteTodoAction} = bindActionCreators(actionCreators, store.dispatch);
 
