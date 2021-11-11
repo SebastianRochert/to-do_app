@@ -4,28 +4,24 @@ import {Action} from "./actions";
 import {TodoDocument} from "../models/todo.model";
 import {DocumentDefinition} from "mongoose";
 import {store} from "./store";
+import {createAction} from "@reduxjs/toolkit";
 
-export const createTodoRedux = (todoD: DocumentDefinition<Omit<TodoDocument, "createdAt" | "updatedAt">>) => {
-    return (dispatch: Dispatch<Action>) => {
-        dispatch({
-            type: ActionType.CREATE,
-            payload: todoD
-        })
+export const createTodoAction = (todoD: TodoDocument) => {
+    return {
+        type: ActionType.CREATE,
+        payload: todoD
     }
 }
 
-export const getTodoRedux = (amount: number) => {
-    return (dispatch: Dispatch<Action>) => {
-        dispatch({
-            type: ActionType.GET
-        })
+export const getTodoAction = () => {
+    return {
+        type: ActionType.GET
     }
 }
 
-export const deleteTodoRedux = () => {
-    return (dispatch: Dispatch<Action>) => {
-        dispatch({
-            type: ActionType.DELETE
-        })
+export const deleteTodoAction = (title: string) => {
+    return {
+        type: ActionType.DELETE,
+        payload: title
     }
 }

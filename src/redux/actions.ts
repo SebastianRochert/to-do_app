@@ -1,10 +1,9 @@
 import {ActionType} from "./action-types";
 import {TodoDocument} from "../models/todo.model";
-import {DocumentDefinition} from "mongoose";
 
 interface CreateAction {
     type: ActionType.CREATE,
-    payload: DocumentDefinition<Omit<TodoDocument, "createdAt" | "updatedAt">>
+    payload: TodoDocument
 }
 
 interface GetAction {
@@ -12,7 +11,8 @@ interface GetAction {
 }
 
 interface DeleteAction {
-    type: ActionType.DELETE
+    type: ActionType.DELETE,
+    payload: string
 }
 
 export type Action = CreateAction | GetAction | DeleteAction;

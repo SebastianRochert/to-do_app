@@ -5,6 +5,7 @@ import logger from "./utils/logger";
 import routes from "./routes";
 import log from "./middleware/log";
 
+
 const port = config.get<number>("port");
 
 const app = express();
@@ -19,3 +20,4 @@ app.listen(port, async () => {
 
     routes(app);
 })
+

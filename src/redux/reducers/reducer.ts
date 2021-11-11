@@ -1,24 +1,20 @@
 import {Action} from "../actions";
 import {ActionType} from "../action-types";
-import TodoModel from "../../models/todo.model";
-import {PayloadAction} from "@reduxjs/toolkit";
-import {AnyAction} from "redux";
+import {TodoDocument} from "../../models/todo.model";
+import {findTodos} from "../../service/todo.service";
 
-const initialState = 0;
+const initialState = new Map<string, TodoDocument>();
 
-const reducer = (state: number = initialState, action: Action) => { //action has a type and a payload
+const reducer = (state: Map<string, TodoDocument> = initialState, action: Action) => { //action has a type and a payload
     switch (action.type){
         case ActionType.CREATE:
-            try {
-                const todo = TodoModel.create(action.payload);
-            } catch (e: any) {
-                throw new Error(e);
-            }
-            return state += 1;
+            return state.set(action.payload.title, action.payload);
         case ActionType.GET:
             return state;
         case ActionType.DELETE:
-            return state -= 1;
+            console.log(action.payload);
+            state.delete(action.payload);
+            return state;
         default:
             return state;
     }

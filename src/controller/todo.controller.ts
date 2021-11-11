@@ -3,53 +3,34 @@ import logger from "../utils/logger";
 import {createTodo, deleteTodo, findTodo, findTodos} from "../service/todo.service";
 import {CreateTodoInput, DeleteTodoInput} from "../schema/todo.schema";
 import {omit} from "lodash";
-import {bindActionCreators} from "redux";
+import {store} from "../redux";
 import {actionCreators} from "../redux/index";
-import {useAppDispatch} from "../redux/hooks";
+import {TodoDocument} from "../models/todo.model";
+import {bindActionCreators} from "redux";
+//import {deleteTodoAction, getTodoAction} from "../redux/action-creators";
+
+const {createTodoAction, getTodoAction, deleteTodoAction} = bindActionCreators(actionCreators, store.dispatch);
 
 
-
-export function createTodoHandlerRedux(
-    req: Request<{}, {}, CreateTodoInput["body"]>,
-    res: Response) {
-
-    console.log("todo.controller.ts line 16");
-
-    const dispatch = useAppDispatch();
-
-    console.log("inside createTodoHandlerRedux");
-
-    const {createTodoRedux, getTodoRedux, deleteTodoRedux} = bindActionCreators(actionCreators, dispatch);
-    try {
-        // create Action, in der createTodoRedux wird die Action direkt dispatched
-        createTodoRedux(req.body);
-
-        logger.info("Todo was successfully added to the Todo-List!")
-
-    } catch (e: any) {
-        logger.error(e);
-        return res.status(409).send(e.message); // 409 conflict, violation of the unique restriction on the title field. Means a to do with that title is already existing
-    }
-}
-
-/*
 export async function createTodoHandler(
     req: Request<{}, {}, CreateTodoInput["body"]>,
     res: Response) {
 
     try {
+        // write in DB
         const todo = await createTodo(req.body);
+        logger.info("Todo was successfully added to the Todo-List!");
+        // write in cache
+        console.log(createTodoAction(<TodoDocument>req.body));
+        console.log("Current state: ", store.getState());
+        logger.info("Todo was successfully added to state!");
 
-        logger.info("Todo was successfully added to the Todo-List!")
         return res.send(todo);
-
     } catch (e: any) {
         logger.error(e);
         return res.status(409).send(e.message); // 409 conflict, violation of the unique restriction on the title field. Means a to do with that title is already existing
     }
 }
-
- */
 
 export async function getTodoHandler(req: Request, res: Response) {
     const todoId = req.params.todoId;
@@ -59,6 +40,7 @@ export async function getTodoHandler(req: Request, res: Response) {
         return res.sendStatus(404);
     }
     logger.info("Todo was successfully displayed!")
+
     return res.send(omit(todo, "_id", "__v", "createdAt", "updatedAt"));
 }
 
@@ -68,8 +50,11 @@ export async function getTodosHandler(req: Request, res: Response) {
     if (!todos) {
         return res.sendStatus(404);
     }
-    logger.info("Todo was successfully displayed!")
+    logger.info("Todo was successfully displayed in API!");
 
+    console.log(getTodoAction());
+    console.log("Current state: ", store.getState());
+    logger.info("Todo was successfully displayed in console!");
     return res.send(todos);
 }
 
@@ -84,7 +69,12 @@ export async function deleteTodoHandler(req: Request<DeleteTodoInput["params"]>,
     }
 
     await deleteTodo({todoTitle});
+    logger.info("Todo was successefully deleted from DB!");
 
-    logger.info("Delete was successfull!");
+    // Redux
+    console.log(deleteTodoAction(todoTitle));
+    console.log("Current state: ", store.getState());
+
+    logger.info("Todo was successfully deleted from state");
     return res.sendStatus(200);
 }
