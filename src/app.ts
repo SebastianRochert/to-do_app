@@ -21,3 +21,21 @@ app.listen(port, async () => {
     routes(app);
 })
 
+/**
+ * ToDo:
+ *  [ ] Selektoren hinzufügen
+ *  [ ] GET Routen über Selektoren abfrühstücken
+ *  [ ] DELETE Suche <to-do> im Store
+ *  [ ] Express-Router: https://expressjs.com/en/guide/routing.html > Ganz unten: express.Router
+ *  [ ] Splitting von healthcheck und api/todos API
+ *  [ ] Middleware (Redux) (einfach logging)
+ *  [ ] Redux-Debugging > Chrome Extensions Redux Devtools. + npm install -g redux-devtools
+ *  [ ] Wie kann ich in der App performance messen?
+ * */
+
+/**
+ * Module:
+ * - router? (api)
+ * - reducer?
+ * - middlewares (persistence / andere Sachen)
+ * */

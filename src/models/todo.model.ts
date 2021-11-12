@@ -3,7 +3,7 @@ import {customAlphabet} from "nanoid";
 
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10); // Id is 10 characters long
 
-export interface TodoDocument extends mongoose.Document {
+export interface TodoEntry {
     title: string;
     description: string;
     priority: number;
@@ -11,6 +11,8 @@ export interface TodoDocument extends mongoose.Document {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export type TodoDocument = TodoEntry & mongoose.Document;
 
 const todoSchema = new mongoose.Schema({
     title: {type: String, required: true, unique: true},

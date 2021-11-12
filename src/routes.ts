@@ -9,8 +9,10 @@ import {
 import {createTodoSchema, deleteTodoSchema} from "./schema/todo.schema";
 
 function routes(app: Express){
+
     app.get("/healthcheck", (req: Request, res: Response) => res.sendStatus(200));
     //Can be called via Terminal curl http://localhost:1338/healthcheck
+
 
     app.post("/api/todos", validateResources(createTodoSchema), createTodoHandler);// Route, Routen spezifische Middleware / Handler
 

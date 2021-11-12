@@ -7,6 +7,7 @@ import {store} from "../redux";
 import {actionCreators} from "../redux/index";
 import {TodoDocument} from "../models/todo.model";
 import {bindActionCreators} from "redux";
+import {getTodos} from "../redux/selectors";
 
 const {createTodoAction, getTodoAction, deleteTodoAction} = bindActionCreators(actionCreators, store.dispatch);
 
@@ -18,6 +19,7 @@ export async function createTodoHandler(
     try {
         // write in DB
         const todo = await createTodo(<TodoDocument>req.body);
+        //const todo = await createTodo(<TodoDocument>req.body);
         logger.info("Todo was successfully added to the Todo-List!");
         // write in cache
         console.log(createTodoAction(<TodoDocument>req.body));
@@ -25,6 +27,7 @@ export async function createTodoHandler(
         logger.info("Todo was successfully added to state!");
 
         return res.send(todo);
+
     } catch (e: any) {
         logger.error(e);
         return res.status(409).send(e.message); // 409 conflict, violation of the unique restriction on the title field. Means a to do with that title is already existing
@@ -34,12 +37,10 @@ export async function createTodoHandler(
 export async function getTodoHandler(req: Request<GetTodoInput["params"]>, res: Response) {
     const todoTitle = req.params.title;
     const todo = await findTodo(todoTitle);
-
     if (!todo) {
         return res.sendStatus(404);
     }
     logger.info("Todo was successfully displayed in API!")
-
     return res.send(omit(todo, "_id", "__v", "createdAt", "updatedAt"));
 }
 
@@ -53,6 +54,9 @@ export async function getTodosHandler(req: Request, res: Response) {
 
     console.log(getTodoAction());
     console.log("Current state: ", store.getState());
+
+    console.log(getTodos(store.getState()));
+
     logger.info("Todo was successfully displayed in console!");
     return res.send(todos);
 }
