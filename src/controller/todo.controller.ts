@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import logger from "../utils/logger";
 import {createTodo, deleteTodo, findTodo, findTodos} from "../service/todo.service";
-import {CreateTodoInput, DeleteTodoInput} from "../schema/todo.schema";
+import {CreateTodoInput, DeleteTodoInput, GetTodoInput} from "../schema/todo.schema";
 import {omit} from "lodash";
 import {store} from "../redux";
 import {actionCreators} from "../redux/index";
@@ -17,7 +17,7 @@ export async function createTodoHandler(
 
     try {
         // write in DB
-        const todo = await createTodo(req.body);
+        const todo = await createTodo(<TodoDocument>req.body);
         logger.info("Todo was successfully added to the Todo-List!");
         // write in cache
         console.log(createTodoAction(<TodoDocument>req.body));
@@ -31,20 +31,20 @@ export async function createTodoHandler(
     }
 }
 
-export async function getTodoHandler(req: Request, res: Response) {
-    const todoId = req.params.todoId;
-    const todo = await findTodo({todoId});
+export async function getTodoHandler(req: Request<GetTodoInput["params"]>, res: Response) {
+    const todoTitle = req.params.title;
+    const todo = await findTodo(todoTitle);
 
     if (!todo) {
         return res.sendStatus(404);
     }
-    logger.info("Todo was successfully displayed!")
+    logger.info("Todo was successfully displayed in API!")
 
     return res.send(omit(todo, "_id", "__v", "createdAt", "updatedAt"));
 }
 
 export async function getTodosHandler(req: Request, res: Response) {
-    const todos = await findTodos({});
+    const todos = await findTodos();
 
     if (!todos) {
         return res.sendStatus(404);
@@ -60,7 +60,7 @@ export async function getTodosHandler(req: Request, res: Response) {
 export async function deleteTodoHandler(req: Request<DeleteTodoInput["params"]>, res: Response) {
     const todoTitle = req.params.title;
 
-    const todo = await findTodo({todoTitle});
+    const todo = await findTodo(todoTitle);
 
     if (!todo) {
         logger.info(`No Todo found by Todo-Title:${todoTitle}`);

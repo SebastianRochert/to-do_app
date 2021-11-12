@@ -11,12 +11,13 @@ export async function createTodo (input: TodoDocument) {
     }
 }
 
-export async function findTodo(query: FilterQuery<TodoDocument>, options: QueryOptions = { lean: true }) {
-    return TodoModel.findOne(query, {}, options);
+export async function findTodo(title: string) {
+    return TodoModel.findOne({title: title});
+    //return TodoModel.where('title').gt
 }
 
-export async function findTodos(query: FilterQuery<TodoDocument>){
-    return TodoModel.find(query, 'title description priority complete');
+export async function findTodos(/*query: FilterQuery<TodoDocument>*/){
+    return TodoModel.find({}, 'title description priority complete');
 }
 
 export async function deleteTodo(query: FilterQuery<TodoDocument>){

@@ -29,7 +29,11 @@ export const deleteTodoSchema = object({
     ...params
 });
 
-export type DeleteTodoInput = TypeOf<typeof deleteTodoSchema>;
+export const getTodoSchema = object({
+    ...params
+});
 
+export type DeleteTodoInput = TypeOf<typeof deleteTodoSchema>;
+export type GetTodoInput = TypeOf<typeof getTodoSchema>
 export type CreateTodoInput = TypeOf<typeof createTodoSchema>;
 

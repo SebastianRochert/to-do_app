@@ -14,7 +14,7 @@ function routes(app: Express){
 
     app.post("/api/todos", validateResources(createTodoSchema), createTodoHandler);// Route, Routen spezifische Middleware / Handler
 
-    app.get("/api/todo", getTodoHandler);
+    app.get("/api/todo/:title", getTodoHandler);
 
     app.get("/api/todos", getTodosHandler);
 
