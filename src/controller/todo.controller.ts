@@ -7,7 +7,7 @@ import {store} from "../redux";
 import {actionCreators} from "../redux/index";
 import {TodoDocument} from "../models/todo.model";
 import {bindActionCreators} from "redux";
-import {getTodos} from "../redux/selectors";
+import {getTodo, getTodos} from "../redux/selectors";
 
 const {createTodoAction, getTodoAction, deleteTodoAction} = bindActionCreators(actionCreators, store.dispatch);
 
@@ -19,8 +19,9 @@ export async function createTodoHandler(
     try {
         // write in DB
         const todo = await createTodo(<TodoDocument>req.body);
-        //const todo = await createTodo(<TodoDocument>req.body);
+
         logger.info("Todo was successfully added to the Todo-List!");
+
         // write in cache
         console.log(createTodoAction(<TodoDocument>req.body));
         console.log("Current state: ", store.getState());
@@ -36,35 +37,41 @@ export async function createTodoHandler(
 
 export async function getTodoHandler(req: Request<GetTodoInput["params"]>, res: Response) {
     const todoTitle = req.params.title;
-    const todo = await findTodo(todoTitle);
+
+    // Suche in der DB
+    //const todo = await findTodo(todoTitle);
+
+    const todo = getTodo(store.getState(), todoTitle);
+
     if (!todo) {
         return res.sendStatus(404);
     }
-    logger.info("Todo was successfully displayed in API!")
+
+    // console.log(getTodo(store.getState(), todoTitle));
+
+    logger.info("Todo was successfully displayed")
     return res.send(omit(todo, "_id", "__v", "createdAt", "updatedAt"));
 }
 
 export async function getTodosHandler(req: Request, res: Response) {
-    const todos = await findTodos();
+    // Suche in der DB
+    // const todos = await findTodos();
+
+    const todos = getTodos(store.getState())
 
     if (!todos) {
         return res.sendStatus(404);
     }
-    logger.info("Todo was successfully displayed in API!");
+    logger.info("Todos was successfully displayed in API!");
 
-    console.log(getTodoAction());
-    console.log("Current state: ", store.getState());
-
-    console.log(getTodos(store.getState()));
-
-    logger.info("Todo was successfully displayed in console!");
+    // console.log(getTodoAction());
+    // console.log("Current state: ", store.getState());
     return res.send(todos);
 }
 
 export async function deleteTodoHandler(req: Request<DeleteTodoInput["params"]>, res: Response) {
     const todoTitle = req.params.title;
-
-    const todo = await findTodo(todoTitle);
+    const todo = getTodo(store.getState(), todoTitle);
 
     if (!todo) {
         logger.info(`No Todo found by Todo-Title:${todoTitle}`);
@@ -72,12 +79,12 @@ export async function deleteTodoHandler(req: Request<DeleteTodoInput["params"]>,
     }
 
     await deleteTodo({todoTitle});
-    logger.info("Todo was successefully deleted from DB!");
 
     // Redux
-    console.log(deleteTodoAction(todoTitle));
-    console.log("Current state: ", store.getState());
+    // console.log(deleteTodoAction(todoTitle));
+    // console.log("Current state: ", store.getState());
 
-    logger.info("Todo was successfully deleted from state");
-    return res.sendStatus(200);
+    logger.info("Todo was successfully deleted from state and DB");
+    // return res.sendStatus(200);
+    return res.send(`Todo "${todoTitle}" was successfully deleted!`);
 }

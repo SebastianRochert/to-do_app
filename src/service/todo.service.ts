@@ -11,9 +11,12 @@ export async function createTodo (input: TodoDocument) {
     }
 }
 
+export async function findTodoState(title: string) {
+    return null;
+}
+
 export async function findTodo(title: string) {
     return TodoModel.findOne({title: title});
-    //return TodoModel.where('title').gt
 }
 
 export async function findTodos(/*query: FilterQuery<TodoDocument>*/){
