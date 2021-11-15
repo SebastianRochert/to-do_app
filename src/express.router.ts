@@ -13,9 +13,4 @@ router.use(function timeLog (req: Request, res: Response, next: NextFunction) {
 
 router.get("/", (req: Request, res: Response) => res.sendStatus(200));
 
-// define the about route
-router.get('/about', function (req: Request, res: Response, next: NextFunction)  {
-    res.send('About birds')
-})
-
 export default router;
