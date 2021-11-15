@@ -81,10 +81,11 @@ export async function deleteTodoHandler(req: Request<DeleteTodoInput["params"]>,
     await deleteTodo({todoTitle});
 
     // Redux
-    // console.log(deleteTodoAction(todoTitle));
+    console.log("deleted object: ")
+    deleteTodoAction(todoTitle);
     // console.log("Current state: ", store.getState());
-
-    logger.info("Todo was successfully deleted from state and DB");
+    console.log("deleted object: ")
+    logger.info(`Todo "${todoTitle}" was successfully deleted!`);
     // return res.sendStatus(200);
     return res.send(`Todo "${todoTitle}" was successfully deleted!`);
 }

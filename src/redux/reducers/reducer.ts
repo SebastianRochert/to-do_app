@@ -24,7 +24,6 @@ const reducer = (state: Map<string, TodoDocument> = initialState, action: Action
         case ActionType.GET:
             return state;
         case ActionType.DELETE:
-            console.log(action.payload);
             state.delete(action.payload);
             return state;
         default:
