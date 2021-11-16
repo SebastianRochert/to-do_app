@@ -20,9 +20,7 @@ async function createInitialState() {
 const reducer = (state: Map<string, TodoDocument> = initialState, action: Action) => { //action has a type and a payload
     switch (action.type){
         case ActionType.CREATE:
-            return state.set(action.payload.title, action.payload);
-        case ActionType.GET:
-            return state;
+            return new Map(state.set(action.payload.title, action.payload));
         case ActionType.DELETE:
             state.delete(action.payload);
             return state;

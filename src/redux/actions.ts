@@ -6,13 +6,9 @@ interface CreateAction {
     payload: TodoDocument
 }
 
-interface GetAction {
-    type: ActionType.GET
-}
-
 interface DeleteAction {
     type: ActionType.DELETE,
     payload: string
 }
 
-export type Action = CreateAction | GetAction | DeleteAction;
+export type Action = CreateAction | DeleteAction;

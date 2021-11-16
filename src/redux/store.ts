@@ -1,9 +1,10 @@
 import reducers from "./reducers/reducer.index";
 import {createStore, applyMiddleware} from 'redux';
 import {crashReporter, reduxLogger} from "../middleware/reduxLogger"
+import {composeWithDevTools} from "remote-redux-devtools";
 
-export const store = createStore(reducers, applyMiddleware(reduxLogger, crashReporter));
-
+const composeEnhancers = composeWithDevTools({name: "Todo-App", hostname: "localhost", realtime: true, port: 9092});
+export const store = createStore(reducers, composeEnhancers(applyMiddleware(reduxLogger, crashReporter)));
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
