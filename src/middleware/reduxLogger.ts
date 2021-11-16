@@ -24,7 +24,7 @@ export const crashReporter = () => (next: (arg0: any) => any) => (action: Action
 export const loadStateMiddleware = (api: MiddlewareAPI) => (next: Dispatch) => (action: Action) => {
     if(action.type === ActionType.REHYDRATION) {
         next(action);
-        const todos = findTodos().then((todos) => {
+        findTodos().then((todos) => {
             for(let todo of todos) {
                 api.dispatch(createTodoAction(todo));
             }
@@ -32,5 +32,4 @@ export const loadStateMiddleware = (api: MiddlewareAPI) => (next: Dispatch) => (
     } else {
         next(action);
     }
-    console.log(action.type);
 }
