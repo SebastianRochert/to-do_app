@@ -19,12 +19,10 @@ export async function createTodoHandler(
     try {
         // write in DB
         const todo = await createTodo(<TodoDocument>req.body);
-
-        logger.info("Todo was successfully added to the Todo-List!");
+        logger.info("Todo was successfully added to DB");
 
         // write in cache
-        console.log(createTodoAction(<TodoDocument>req.body));
-        console.log("Current state: ", store.getState());
+        createTodoAction(<TodoDocument>req.body);
         logger.info("Todo was successfully added to state!");
 
         return res.send(todo);
@@ -46,9 +44,8 @@ export async function getTodoHandler(req: Request<GetTodoInput["params"]>, res: 
     if (!todo) {
         return res.sendStatus(404);
     }
-
     // console.log(getTodo(store.getState(), todoTitle));
-
+    console.log("Current State: ", store.getState());
     logger.info("Todo was successfully displayed")
     return res.send(omit(todo, "_id", "__v", "createdAt", "updatedAt"));
 }
@@ -81,10 +78,8 @@ export async function deleteTodoHandler(req: Request<DeleteTodoInput["params"]>,
     await deleteTodo({todoTitle});
 
     // Redux
-    console.log("deleted object: ")
     deleteTodoAction(todoTitle);
-    // console.log("Current state: ", store.getState());
-    console.log("deleted object: ")
+
     logger.info(`Todo "${todoTitle}" was successfully deleted!`);
     // return res.sendStatus(200);
     return res.send(`Todo "${todoTitle}" was successfully deleted!`);

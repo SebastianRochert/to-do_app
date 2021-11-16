@@ -2,24 +2,26 @@ import express from "express";
 import config from "config";
 import connect from "./utils/connect";
 import logger from "./utils/logger";
-import routes from "./routes";
 import log from "./middleware/log";
+import router from "./express.router";
+import apiRouter from "./api.router";
 
 const port = config.get<number>("port");
 const app = express();
-import router from "./express.router";
+
 
 app.use(express.json());
 
-app.use("/api", log);
+app.use("/healthcheck", router);
 
-app.use("/healthcheck", router)
+app.use("/api", apiRouter);
+app.use("/api", log);
 
 app.listen(port, async () => {
     logger.info(`App is running at http://localhost:${port} `);
     await connect();
 
-    routes(app);
+    //routes(app);
 })
 
 /**
@@ -29,7 +31,7 @@ app.listen(port, async () => {
  *  [X] DELETE Suche <to-do> im Store
  *  [X] Express-Router: https://expressjs.com/en/guide/routing.html > Ganz unten: express.Router
  *  [X] Splitting von healthcheck und api/todos API
- *  [ ] Middleware (Redux) (einfach logging)
+ *  [X] Middleware (Redux) (einfach logging)
  *  [ ] Redux-Debugging > Chrome Extensions Redux Devtools. + npm install -g redux-devtools
  *  [ ] Wie kann ich in der App performance messen?
  * */

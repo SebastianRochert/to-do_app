@@ -8,6 +8,7 @@ import {
 } from "./controller/todo.controller";
 import {createTodoSchema, deleteTodoSchema} from "./schema/todo.schema";
 
+/*
 function routes(app: Express){
 
     app.post("/api/todos", validateResources(createTodoSchema), createTodoHandler);// Route, Routen spezifische Middleware / Handler
@@ -20,3 +21,4 @@ function routes(app: Express){
 }
 
 export default routes;
+*/

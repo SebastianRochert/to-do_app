@@ -1,7 +1,8 @@
 import reducers from "./reducers/reducer.index";
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
+import {crashReporter, reduxLogger} from "../middleware/reduxLogger"
 
-export const store = createStore(reducers);
+export const store = createStore(reducers, applyMiddleware(reduxLogger, crashReporter));
 
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
