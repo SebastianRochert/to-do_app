@@ -13,12 +13,6 @@ export const createTodoAction = (todoD: TodoDocument) => {
     }
 }
 
-export const getTodoAction = () => {
-    return {
-        type: ActionType.GET
-    }
-}
-
 export const deleteTodoAction = (title: string) => {
     return {
         type: ActionType.DELETE,

@@ -8,12 +8,12 @@ import {createTodoHandler, deleteTodoHandler, getTodoHandler, getTodosHandler} f
 
 const apiRouter = express.Router();
 
-apiRouter.post("/todos", validateResources(createTodoSchema), createTodoHandler);// Route, Routen spezifische Middleware / Handler
+apiRouter.post("/", validateResources(createTodoSchema), createTodoHandler);// Route, Routen spezifische Middleware / Handler
 
-apiRouter.get("/todo/:title", getTodoHandler);
+apiRouter.get("/:title", getTodoHandler);
 
-apiRouter.get("/todos", getTodosHandler);
+apiRouter.get("/", getTodosHandler);
 
-apiRouter.delete("/todos/:title", validateResources(deleteTodoSchema), deleteTodoHandler);
+apiRouter.delete("/:title", validateResources(deleteTodoSchema), deleteTodoHandler);
 
 export default apiRouter;

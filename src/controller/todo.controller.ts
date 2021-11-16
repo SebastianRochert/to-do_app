@@ -9,7 +9,7 @@ import {TodoDocument} from "../models/todo.model";
 import {bindActionCreators} from "redux";
 import {getTodo, getTodos} from "../redux/selectors";
 
-const {createTodoAction, getTodoAction, deleteTodoAction} = bindActionCreators(actionCreators, store.dispatch);
+const {createTodoAction, deleteTodoAction} = bindActionCreators(actionCreators, store.dispatch);
 
 
 export async function createTodoHandler(

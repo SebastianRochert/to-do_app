@@ -1,4 +1,5 @@
 export enum ActionType {
     CREATE = "create",
-    DELETE = "delete"
+    DELETE = "delete",
+    REHYDRATION = "rehydration"
 }

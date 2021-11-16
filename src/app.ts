@@ -10,11 +10,12 @@ const port = config.get<number>("port");
 const app = express();
 
 
+
 app.use(express.json());
 
 app.use("/healthcheck", router);
 
-app.use("/api", apiRouter);
+app.use("/api/todos", apiRouter);
 app.use("/api", log);
 
 app.listen(port, async () => {

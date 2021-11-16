@@ -11,4 +11,8 @@ interface DeleteAction {
     payload: string
 }
 
-export type Action = CreateAction | DeleteAction;
+interface RehydrationAction {
+    type: ActionType.REHYDRATION
+}
+
+export type Action = CreateAction | DeleteAction | RehydrationAction;
