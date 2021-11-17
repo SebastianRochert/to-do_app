@@ -14,6 +14,8 @@ apiRouter.get("/:title", getTodoHandler);
 
 apiRouter.get("/", getTodosHandler);
 
+//apiRouter.get("/byTitle", getTodosByTitleHandler);
+
 apiRouter.delete("/:title", validateResources(deleteTodoSchema), deleteTodoHandler);
 
 export default apiRouter;

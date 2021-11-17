@@ -28,7 +28,7 @@ app.listen(port, async () => {
 /**
  * ToDo:
  *  [X] Selektoren hinzufügen
- *  [X] GET Routen über Selektoren abfrühstücken
+ *  [ ] GET Routen über Selektoren abfrühstücken
  *  [X] DELETE Suche <to-do> im Store
  *  [X] Express-Router: https://expressjs.com/en/guide/routing.html > Ganz unten: express.Router
  *  [X] Splitting von healthcheck und api/todos API
