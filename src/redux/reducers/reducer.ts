@@ -2,8 +2,11 @@ import {Action} from "../actions";
 import {ActionType} from "../action-types";
 import {TodoDocument} from "../../models/todo.model";
 import {findTodos} from "../../service/todo.service";
+import {string} from "zod";
+
 
 const initialState = new Map<string, TodoDocument>();
+/*
 createInitialState();
 
 async function createInitialState() {
@@ -16,16 +19,18 @@ async function createInitialState() {
         initialState.set(temp.title, todo);
     }
 }
+ */
 
 const reducer = (state: Map<string, TodoDocument> = initialState, action: Action) => { //action has a type and a payload
     switch (action.type){
         case ActionType.CREATE:
-            return new Map(state.set(action.payload.title, action.payload));
+            state.set(action.payload.title, action.payload);
+            return new Map(state.entries());
         case ActionType.DELETE:
             state.delete(action.payload);
-            return state;
+            return new Map(state.entries());
         default:
-            return state;
+            return new Map(state.entries());
     }
 }
 

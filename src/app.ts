@@ -33,7 +33,7 @@ app.listen(port, async () => {
  *  [X] Express-Router: https://expressjs.com/en/guide/routing.html > Ganz unten: express.Router
  *  [X] Splitting von healthcheck und api/todos API
  *  [X] Middleware (Redux) (einfach logging)
- *  [ ] Redux-Debugging > Chrome Extensions Redux Devtools. + npm install -g redux-devtools
+ *  [X] Redux-Debugging > Chrome Extensions Redux Devtools. + npm install -g redux-devtools
  *  [ ] Wie kann ich in der App performance messen?
  * */
 
