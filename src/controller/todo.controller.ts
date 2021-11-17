@@ -54,7 +54,7 @@ export async function getTodosHandler(req: Request, res: Response) {
     // Suche in der DB
     // const todos = await findTodos();
 
-    const todos = getTodos(store.getState())
+    const todos = store.getState();
 
     if (!todos) {
         return res.sendStatus(404);
