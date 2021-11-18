@@ -6,10 +6,13 @@ import {store} from "../redux";
 import {actionCreators} from "../redux/index";
 import {TodoDocument} from "../models/todo.model";
 import {bindActionCreators} from "redux";
-import {getTodo} from "../redux/selectors";
+import {getTodo, getTodos} from "../redux/selectors";
+import {performance} from "perf_hooks";
+import {myPerformanceObserver} from "../performance/myPerformanceObserver";
 
 const {createTodoAction, deleteTodoAction} = bindActionCreators(actionCreators, store.dispatch);
 
+myPerformanceObserver.observe({entryTypes: ["measure"]});
 
 export async function createTodoHandler(
     req: Request<{}, {}, CreateTodoInput["body"]>,
@@ -45,17 +48,22 @@ export async function getTodoHandler(req: Request<GetTodoInput["params"]>, res: 
 }
 
 export async function getTodosHandler(req: Request, res: Response) {
-    const todos = store.getState();
+    performance.mark("start");
+    const todos = getTodos(store.getState());
 
     if (!todos) {
         return res.sendStatus(404);
     }
     logger.info("Todos was successfully displayed in API!");
 
+    performance.mark("stop");
+    performance.measure("getTodosHandler", "start", "stop");
+
     return res.send(todos);
 }
 
 export async function deleteTodoHandler(req: Request<DeleteTodoInput["params"]>, res: Response) {
+    performance.mark("start");
     const todoTitle = req.params.title;
     const todo = getTodo(store.getState(), todoTitle);
 
@@ -70,5 +78,7 @@ export async function deleteTodoHandler(req: Request<DeleteTodoInput["params"]>,
 
     logger.info(`Todo "${todoTitle}" was successfully deleted!`);
     // return res.sendStatus(200);
+    performance.mark("stop");
+    performance.measure("deleteTodoHandler", "start", "stop");
     return res.send(`Todo "${todoTitle}" was successfully deleted!`);
 }

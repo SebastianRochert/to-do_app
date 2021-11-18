@@ -5,22 +5,15 @@ import {findTodos} from "../service/todo.service";
 import {createTodoAction} from "../redux/action-creators";
 import {performance, PerformanceObserver} from "perf_hooks";
 import TodoModel from "../models/todo.model";
+import {myPerformanceObserver} from "../performance/myPerformanceObserver";
 
-require = performance.timerify(require);
-
-const performanceObserver = new PerformanceObserver((items, observer) => {
-    items.getEntries().forEach((entry) => {
-        console.log(`${entry.name}: ${entry.duration}`);
-    });
-    observer.disconnect();
-})
-performanceObserver.observe({entryTypes: ["measure"]});
+myPerformanceObserver.observe({entryTypes: ["measure"]});
 
 // Redux Logger as seen on https://redux.js.org/understanding/history-and-design/middleware#problem-logging
 export const reduxLogger = (api: MiddlewareAPI) => (next: (arg0: any) => any) => (action: Action) => {
-    console.log("dispatching: ", action);
+    //console.log("dispatching: ", action);
     let result = next(action);
-    console.log("Next State: ", api.getState());
+    //console.log("Next State: ", api.getState());
     return result;
 }
 
@@ -44,18 +37,18 @@ export const loadStateMiddleware = (api: MiddlewareAPI) => (next: Dispatch) => (
          2 = connecting
          3 = disconnecting
          */
-        console.log("DB readyState", TodoModel.db.readyState);
+        //console.log("DB readyState", TodoModel.db.readyState);
         findTodos().then((todos) => {
-            console.log("DB readyState", TodoModel.db.readyState);
+            //console.log("DB readyState", TodoModel.db.readyState);
             for (let todo of todos) {
                 api.dispatch(createTodoAction(todo));
             }
+            performance.mark("stop");
+            performance.measure("loadStateMiddleware", "start", "stop");
         });
     } else {
         next(action);
     }
-    performance.mark("stop");
-    performance.measure("loadStateMiddleware", "start", "stop");
 }
 
 /* Funktioniert nur mit einer Browser-Ausgabe...
@@ -83,5 +76,4 @@ export const loadStateMiddleware = (api: MiddlewareAPI) => (next: Dispatch) => (
         performance.clearMeasures();
     }, 1000);
 }
-
  */

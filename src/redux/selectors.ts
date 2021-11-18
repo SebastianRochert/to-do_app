@@ -4,7 +4,10 @@ import {result} from "lodash";
 
 
 export const getTodos = (state: RootState): TodoEntry[] => {
-    return Array.from(state.todoList, (doc) => doc as unknown as TodoEntry);
+    return state.todoList.map((v) => {
+        const {_id, title, description, priority, complete, createdAt, updatedAt} = v;
+        return {title, description, priority, complete, createdAt, updatedAt};
+    })
 }
 /*
 export const getTodo = (state: RootState, title: string): TodoEntry | undefined => {

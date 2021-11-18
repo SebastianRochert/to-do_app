@@ -5,6 +5,8 @@ import logger from "./utils/logger";
 import log from "./middleware/log";
 import router from "./express.router";
 import apiRouter from "./api.router";
+import {ActionType} from "./redux/action-types";
+import {store} from "./redux";
 
 const port = config.get<number>("port");
 const app = express();
@@ -21,7 +23,7 @@ app.use("/api", log);
 app.listen(port, async () => {
     logger.info(`App is running at http://localhost:${port} `);
     await connect();
-
+    store.dispatch({type: ActionType.REHYDRATION});
     //routes(app);
 })
 
