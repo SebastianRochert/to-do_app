@@ -4,6 +4,7 @@ import {ActionType} from "../redux/action-types";
 import {findTodos} from "../service/todo.service";
 import {createTodoAction} from "../redux/action-creators";
 import {performance, PerformanceObserver} from "perf_hooks";
+import TodoModel from "../models/todo.model";
 
 require = performance.timerify(require);
 
@@ -34,20 +35,27 @@ export const crashReporter = () => (next: (arg0: any) => any) => (action: Action
 
 export const loadStateMiddleware = (api: MiddlewareAPI) => (next: Dispatch) => (action: Action) => {
     performance.mark("start");
-    setTimeout(() => {
-        if (action.type === ActionType.REHYDRATION) {
-            next(action);
-            findTodos().then((todos) => {
-                for (let todo of todos) {
-                    api.dispatch(createTodoAction(todo));
-                }
-            });
-        } else {
-            next(action);
-        }
-        performance.mark("stop");
-        performance.measure("loadStateMiddleware", "start", "stop");
-    }, 500);
+    if (action.type === ActionType.REHYDRATION) {
+        next(action);
+        /**
+         * Connection ready state
+         0 = disconnected
+         1 = connected
+         2 = connecting
+         3 = disconnecting
+         */
+        console.log("DB readyState", TodoModel.db.readyState);
+        findTodos().then((todos) => {
+            console.log("DB readyState", TodoModel.db.readyState);
+            for (let todo of todos) {
+                api.dispatch(createTodoAction(todo));
+            }
+        });
+    } else {
+        next(action);
+    }
+    performance.mark("stop");
+    performance.measure("loadStateMiddleware", "start", "stop");
 }
 
 /* Funktioniert nur mit einer Browser-Ausgabe...
