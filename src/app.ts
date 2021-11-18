@@ -9,7 +9,7 @@ import apiRouter from "./api.router";
 const port = config.get<number>("port");
 const app = express();
 
-
+// redux-devtools --port=9092 to start devtools server
 
 app.use(express.json());
 
@@ -28,7 +28,8 @@ app.listen(port, async () => {
 /**
  * ToDo:
  *  [X] Selektoren hinzufügen
- *  [ ] GET Routen über Selektoren abfrühstücken
+ *  [naja] GET Routen über Selektoren abfrühstücken
+ *          --> getTodos (Alle Todos) kann direkt über store.getState() erhalten werden. Selektor dafür also eigentlich überflüssig, oder?
  *  [X] DELETE Suche <to-do> im Store
  *  [X] Express-Router: https://expressjs.com/en/guide/routing.html > Ganz unten: express.Router
  *  [X] Splitting von healthcheck und api/todos API
