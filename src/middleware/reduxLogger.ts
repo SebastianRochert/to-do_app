@@ -4,7 +4,7 @@ import {ActionType} from "../redux/action-types";
 import {findTodos} from "../service/todo.service";
 import {createTodoAction} from "../redux/action-creators";
 import {performance, PerformanceObserver} from "perf_hooks";
-import TodoModel from "../models/todo.model";
+import {PerformanceType} from "../performance/performance-types";
 import {myPerformanceObserver} from "../performance/myPerformanceObserver";
 
 myPerformanceObserver.observe({entryTypes: ["measure"]});
@@ -44,7 +44,7 @@ export const loadStateMiddleware = (api: MiddlewareAPI) => (next: Dispatch) => (
                 api.dispatch(createTodoAction(todo));
             }
             performance.mark("stop");
-            performance.measure("loadStateMiddleware", "start", "stop");
+            performance.measure(PerformanceType.LOAD, "start", "stop");
         });
     } else {
         next(action);

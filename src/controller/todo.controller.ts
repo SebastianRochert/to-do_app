@@ -9,6 +9,7 @@ import {bindActionCreators} from "redux";
 import {getTodo, getTodos} from "../redux/selectors";
 import {performance} from "perf_hooks";
 import {myPerformanceObserver} from "../performance/myPerformanceObserver";
+import {PerformanceType} from "../performance/performance-types";
 
 const {createTodoAction, deleteTodoAction} = bindActionCreators(actionCreators, store.dispatch);
 
@@ -57,7 +58,7 @@ export async function getTodosHandler(req: Request, res: Response) {
     logger.info("Todos was successfully displayed in API!");
 
     performance.mark("stop");
-    performance.measure("getTodosHandler", "start", "stop");
+    performance.measure(PerformanceType.GET, "start", "stop");
 
     return res.send(todos);
 }
@@ -79,6 +80,6 @@ export async function deleteTodoHandler(req: Request<DeleteTodoInput["params"]>,
     logger.info(`Todo "${todoTitle}" was successfully deleted!`);
     // return res.sendStatus(200);
     performance.mark("stop");
-    performance.measure("deleteTodoHandler", "start", "stop");
+    performance.measure(PerformanceType.DELETE, "start", "stop");
     return res.send(`Todo "${todoTitle}" was successfully deleted!`);
 }
