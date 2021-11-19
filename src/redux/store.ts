@@ -4,7 +4,7 @@ import {crashReporter, loadStateMiddleware, reduxLogger} from "../middleware/red
 import {composeWithDevTools} from "remote-redux-devtools";
 import {ActionType} from "./action-types";
 
-const composeEnhancers = composeWithDevTools({name: "Todo-App", hostname: "localhost", realtime: true, port: 9092});
+const composeEnhancers = composeWithDevTools({name: "Todo-App", hostname: "localhost", realtime: false, port: 9092});
 export const store = createStore(reducers, composeEnhancers(applyMiddleware(loadStateMiddleware, reduxLogger, crashReporter)));
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

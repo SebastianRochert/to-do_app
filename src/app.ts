@@ -15,7 +15,7 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/healthcheck", router);
+app.use("/", router);
 
 app.use("/api/todos", apiRouter);
 app.use("/api", log);
