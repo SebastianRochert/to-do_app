@@ -1,5 +1,4 @@
 import {getDeleteTime, getGetTime, getStartTime} from "./performance/performanceTimes";
-import {Request, Response} from "express";
 
 export function testApp() {
     const erg = `Performance Measurements:
@@ -7,5 +6,8 @@ export function testApp() {
             Duration of get call: ${getGetTime()}
             Duration of delete call: ${getDeleteTime()}`;
     console.log(erg);
-    //return erg;
+}
+
+export function testGet(){
+
 }
