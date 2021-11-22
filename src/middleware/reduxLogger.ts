@@ -23,7 +23,10 @@ export const crashReporter = () => (next: (arg0: any) => any) => (action: Action
     } catch (e: any) {
         console.error("Caught an exeption!", e)
         throw new Error(e);
-    }
+    }/*
+    finally {
+        console.log("lief schon wieder nicht so gut");
+    }*/
 }
 
 export const loadStateMiddleware = (api: MiddlewareAPI) => (next: Dispatch) => (action: Action) => {

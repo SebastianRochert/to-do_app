@@ -9,6 +9,10 @@ export async function createTodo (input: TodoDocument) {
     } catch (e: any) {
         throw new Error(e);
     }
+    /*
+    finally {
+        console.log("lief nicht so gut");
+    }*/
 }
 
 export async function findTodoState(title: string) {
