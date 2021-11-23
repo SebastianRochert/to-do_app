@@ -1,7 +1,4 @@
 import mongoose from "mongoose";
-import {customAlphabet} from "nanoid";
-
-const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789", 10); // Id is 10 characters long
 
 export interface TodoEntry {
     title: string;

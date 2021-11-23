@@ -7,12 +7,9 @@ export async function createTodo (input: TodoDocument) {
         const todo = await TodoModel.create(input);
         return todo.toJSON();
     } catch (e) {
+        console.log(e);
         throw new Error("Exception thrown in createTodo");
     }
-}
-
-export async function findTodoState(title: string) {
-    return null;
 }
 
 export async function findTodo(title: string) {
