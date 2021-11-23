@@ -1,8 +1,8 @@
-
 let startTime:number = 0.0;
 let getTime: number = 0.0;
 let deleteTime:number = 0.0;
 let testGetTime: number = 0.0;
+let testCreateTime: number = 0.0;
 
 export function setStartTime(newStartTime: number) {
     startTime = newStartTime;
@@ -33,10 +33,10 @@ export function getTestGetTime() {
     return testGetTime;
 }
 
-export function setTestCreateTime(newTestGetTime: number) {
-    testGetTime = newTestGetTime;
+export function setTestCreateTime(newTestCreateTime: number) {
+    testCreateTime = newTestCreateTime;
 }
 
 export function getTestCreateTime() {
-    return testGetTime;
+    return testCreateTime;
 }

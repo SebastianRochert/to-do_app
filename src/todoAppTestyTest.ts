@@ -14,7 +14,6 @@ import connect from "./utils/connect";
 import {getTodo, getTodos} from "./redux/selectors";
 import {ActionType} from "./redux/action-types";
 import config from "config";
-import mongoose from "mongoose";
 import disconnect from "./utils/disconnect";
 
 // Vars
@@ -46,6 +45,25 @@ export class MyTestSuite {
 
     @AfterAll()
     async afterAll() {
+        //await this.deleteTestTodos();
+        await disconnect();
+    }
+
+    @Test('30x30')
+    async create30x30() {
+        let average = 0.0;
+        for(let i = 0; i < 30; i++) {
+            await this.createTodos();
+            average += getTestCreateTime();
+            await this.deleteTestTodos();
+            counter = 0;
+        }
+        logger.info(`Running 30x30 took ${average} in total.`)
+        const a30 = average/30;
+        logger.info(`Durchschnittliche Dauer zum erstellen von 30 Todo's: ${a30}`);
+    }
+
+    async deleteTestTodos() {
         for(let i = 1; i <= counter; i++) {
             let todoTitle = `test${i}`;
 
@@ -56,12 +74,10 @@ export class MyTestSuite {
             await deleteTodo({todoTitle});
             deleteTodoAction(todoTitle);
         }
-        await disconnect();
     }
 
-    @Test('Create todos and display them via getTodos')
+    //@Test('Create a variable number of todos')
     async createTodos() {
-        console.log("Start createTodo Test");
         performance.mark("startCreate");
         for(let i = 0; i < 30; i++) {
             try {
@@ -75,7 +91,6 @@ export class MyTestSuite {
             //this.testGetTodos();
         }
         performance.mark("endCreate");
-        console.log("End createTodo Test")
         performance.measure(PerformanceType.TEST_CREATE, "startCreate", "endCreate");
         console.log(`Das Erstellen aller Todos hat ${getTestCreateTime()} gedauert.`);
     }
@@ -90,7 +105,7 @@ export class MyTestSuite {
         };
     }
 
-    @Test("Get Todos Time")
+    //@Test("Get Todos Time")
     testGetTodos() {
         performance.mark("start");
         const todos = getTodos(store.getState());
