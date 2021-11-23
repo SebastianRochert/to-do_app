@@ -32,3 +32,11 @@ export function setTestGetTime(newTestGetTime: number) {
 export function getTestGetTime() {
     return testGetTime;
 }
+
+export function setTestCreateTime(newTestGetTime: number) {
+    testGetTime = newTestGetTime;
+}
+
+export function getTestCreateTime() {
+    return testGetTime;
+}

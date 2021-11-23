@@ -20,13 +20,10 @@ export const reduxLogger = (api: MiddlewareAPI) => (next: (arg0: any) => any) =>
 export const crashReporter = () => (next: (arg0: any) => any) => (action: Action) => {
     try {
         return next(action);
-    } catch (e: any) {
-        console.error("Caught an exeption!", e)
-        throw new Error(e);
-    }/*
-    finally {
-        console.log("lief schon wieder nicht so gut");
-    }*/
+    } catch (e) {
+        console.error("Caught an exception!", e)
+        throw new Error("Exception thrown in reduxLogger.ts/crashReporter");
+    }
 }
 
 export const loadStateMiddleware = (api: MiddlewareAPI) => (next: Dispatch) => (action: Action) => {

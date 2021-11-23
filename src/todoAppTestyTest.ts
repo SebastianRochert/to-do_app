@@ -1,21 +1,20 @@
 import {TestSuite} from "testyts/build/lib/decorators/testSuite.decorator";
 import {Test} from "testyts/build/lib/decorators/test.decorator";
-import {expect} from "testyts/build/lib/assertion/expect";
 import {AfterAll, AfterEach, BeforeAll, BeforeEach} from "testyts/build/lib/decorators/afterAndBefore.decorator";
-import e, {request} from "express";
 import {createTodo, deleteTodo} from "./service/todo.service";
-import TodoModel, {TodoDocument} from "./models/todo.model";
-import {createTodoAction, deleteTodoAction} from "./redux/action-creators";
-import {getTodos} from "./redux/selectors";
-import {store} from "./redux";
+import {TodoDocument} from "./models/todo.model";
+import {actionCreators, store} from "./redux";
 import {performance} from "perf_hooks";
-import logger from "./utils/logger";
 import {PerformanceType} from "./performance/performance-types";
 import {myPerformanceObserver} from "./performance/myPerformanceObserver";
-import {getTestGetTime} from "./performance/performanceTimes";
+import {getTestCreateTime, getTestGetTime} from "./performance/performanceTimes";
+import {bindActionCreators} from "redux";
+import logger from "./utils/logger";
+import {CreateTodoInput} from "./schema/todo.schema";
 
 let counter: number;
 myPerformanceObserver.observe({entryTypes: ["measure"]});
+const {createTodoAction, deleteTodoAction} = bindActionCreators(actionCreators, store.dispatch);
 
 @TestSuite()
 export class MyTestSuite {
@@ -37,40 +36,41 @@ export class MyTestSuite {
 
     @AfterAll()
     afterAll() {
-        for(let i = 0; i < counter; i++) {
-            let todoTitle = `test${i}`;
-            const ignore = deleteTodo({todoTitle});
-            deleteTodoAction(todoTitle);
-        }
+
     }
 
     @Test('Create todos and display them via getTodos')
-    createTodos() {
-        // Creating a bunch of todos
-        let ergTestTime = 0.0;
-        for(let i = 0; i < 200; i++) {
-            const todoD = <TodoDocument>this.createSingleTodo();
-            const todo = createTodo(todoD);
-            createTodoAction(todoD);
-
-            ergTestTime = ergTestTime + getTestGetTime()
-
-            this.testGetTodos();
+    async createTodos() {
+        logger.info("Start createTodo Test");
+        performance.mark("startCreate");
+        for(let i = 0; i < 30; i++) {
+            try {
+                const todoD = <TodoDocument><unknown><CreateTodoInput><unknown>this.createSingleTodo();
+                const todo = await createTodo(todoD);
+                createTodoAction(todoD);
+            } catch (e) {
+                logger.error(e);
+            }
+            //console.log(store.getState());
+            //this.testGetTodos();
         }
-        console.log(`Das Erstellen und ausgeben aller Todos hat ${ergTestTime} gedauert.`);
+        performance.mark("endCreate");
+        performance.measure(PerformanceType.TEST_CREATE, "startCreate", "endCreate");
+        console.log(`Das Erstellen aller Todos hat ${getTestCreateTime()} gedauert.`);
     }
 
     createSingleTodo() {
-        let todoBody = {
-            title: `test${counter}`,
-            description: "Any description",
-            priority: 1,
-            complete: "no"
-        }
+        let todoBody =
+            {
+                title: `test${counter}`,
+                description: "Any description",
+                priority: 1,
+                complete: "no"
+            };
         counter = counter + 1;
         return todoBody;
     }
-
+/*
     testGetTodos() {
         performance.mark("start");
         const todos = getTodos(store.getState());
@@ -79,5 +79,6 @@ export class MyTestSuite {
         performance.mark("stop");
         performance.measure(PerformanceType.TEST_GET, "start", "stop");
     }
+ */
 }
 

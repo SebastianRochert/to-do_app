@@ -1,6 +1,6 @@
 import {performance, PerformanceObserver} from "perf_hooks";
 import {PerformanceType} from "./performance-types";
-import {setDeleteTime, setGetTime, setStartTime, setTestGetTime} from "./performanceTimes";
+import {setDeleteTime, setGetTime, setStartTime, setTestCreateTime, setTestGetTime} from "./performanceTimes";
 
 require = performance.timerify(require);
 
@@ -19,6 +19,9 @@ export const myPerformanceObserver = new PerformanceObserver((items, observer) =
                 break;
             case PerformanceType.TEST_GET:
                 setTestGetTime(entry.duration);
+                break;
+            case PerformanceType.TEST_CREATE:
+                setTestCreateTime(entry.duration);
                 break;
             default:
                 break;
