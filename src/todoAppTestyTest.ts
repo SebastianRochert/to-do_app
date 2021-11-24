@@ -7,7 +7,7 @@ import {actionCreators, store} from "./redux";
 import {performance} from "perf_hooks";
 import {PerformanceType} from "./performance/performance-types";
 import {myPerformanceObserver} from "./performance/myPerformanceObserver";
-import {getTestCreateTime} from "./performance/performanceTimes";
+import {getTestCreateTime, getTestGetTime} from "./performance/performanceTimes";
 import {bindActionCreators} from "redux";
 import logger from "./utils/logger";
 import connect from "./utils/connect";
@@ -27,7 +27,6 @@ export class MyTestSuite {
 
     @BeforeAll()
     async beforeAll() {
-        counter = 0;
         logger.info(`App is running at http://localhost:${port} `);
         await connect();
         store.dispatch({type: ActionType.REHYDRATION});
@@ -35,7 +34,7 @@ export class MyTestSuite {
 
     @BeforeEach()
     beforeEach() {
-        // This is executed before each test
+        counter = 0;
     }
 
     @AfterEach()
@@ -55,7 +54,7 @@ export class MyTestSuite {
         for(let i = 0; i < 30; i++) {
             await this.createTodos(30);
             average += getTestCreateTime();
-            await this.deleteTestTodos();
+            await this.deleteTestTodos(30);
             counter = 0;
         }
         logger.info(`Running 30x30 took ${average} in total.`)
@@ -63,8 +62,8 @@ export class MyTestSuite {
         logger.info(`Durchschnittliche Dauer zum erstellen von 30 Todo's: ${a30}`);
     }
 
-    async deleteTestTodos() {
-        for(let i = 1; i <= counter; i++) {
+    async deleteTestTodos(numberTodos: number) {
+        for(let i = 1; i <= numberTodos; i++) {
             let todoTitle = `test${i}`;
 
             const todo = getTodo(store.getState(), todoTitle);
@@ -105,16 +104,21 @@ export class MyTestSuite {
         };
     }
 
-    //@Test("Get Todos Time")
-    testGetTodos() {
+    @Test("Get Todos Time")
+    async testGetTodos() {
+        const numberGet = 1000;
+        await this.createTodos(numberGet);
+
         performance.mark("start");
         const todos = getTodos(store.getState());
 
         if (!todos) {
             console.log("404 in testGetTodos")
         }
-        console.log(`${counter} Todos where Displayed`);
+        console.log(`${numberGet} Todos where Displayed`);
         performance.mark("stop");
         performance.measure(PerformanceType.TEST_GET, "start", "stop");
+        logger.info(`get ${numberGet} Todos took ${getTestGetTime()} time`);
+        await this.deleteTestTodos(numberGet);
     }
 }
