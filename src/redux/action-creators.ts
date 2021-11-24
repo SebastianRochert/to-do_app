@@ -1,6 +1,4 @@
 import {ActionType} from "./action-types";
-import {Dispatch} from "redux";
-import {Action} from "./actions";
 import {TodoDocument} from "../models/todo.model";
 
 export const createTodoAction = (todoD: TodoDocument) => {

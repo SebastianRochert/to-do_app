@@ -53,7 +53,7 @@ export class MyTestSuite {
     async create30x30() {
         let average = 0.0;
         for(let i = 0; i < 30; i++) {
-            await this.createTodos();
+            await this.createTodos(30);
             average += getTestCreateTime();
             await this.deleteTestTodos();
             counter = 0;
@@ -77,9 +77,9 @@ export class MyTestSuite {
     }
 
     //@Test('Create a variable number of todos')
-    async createTodos() {
+    async createTodos(numberTodos: number) {
         performance.mark("startCreate");
-        for(let i = 0; i < 30; i++) {
+        for(let i = 0; i < numberTodos; i++) {
             try {
                 const todoD = <TodoDocument>this.createSingleTodo();
                 const todo = await createTodo(todoD);

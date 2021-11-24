@@ -1,12 +1,9 @@
-import {Request, Response} from "express";
-import {NextFunction} from "express";
 import express from 'express';
 import logger from "./utils/logger";
 import validateResources from "./middleware/validateResources";
 import {createTodoSchema, deleteTodoSchema} from "./schema/todo.schema";
 import {createTodoHandler, deleteTodoHandler, getTodoHandler, getTodosHandler} from "./controller/todo.controller";
 import {testApp} from "./test";
-import {performance} from "perf_hooks";
 
 const apiRouter = express.Router();
 

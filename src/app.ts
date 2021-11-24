@@ -37,7 +37,7 @@ app.listen(port, async () => {
  *  [X] Splitting von healthcheck und api/todos API
  *  [X] Middleware (Redux) (einfach logging)
  *  [X] Redux-Debugging > Chrome Extensions Redux Devtools. + npm install -g redux-devtools
- *  [ ] Wie kann ich in der App performance messen?
+ *  [X] Wie kann ich in der App performance messen?
  * */
 
 /**

@@ -2,7 +2,6 @@ import reducers from "./reducers/reducer.index";
 import {createStore, applyMiddleware} from 'redux';
 import {crashReporter, loadStateMiddleware, reduxLogger} from "../middleware/reduxLogger"
 import {composeWithDevTools} from "remote-redux-devtools";
-import {ActionType} from "./action-types";
 
 const composeEnhancers = composeWithDevTools({name: "Todo-App", hostname: "localhost", realtime: false, port: 9092});
 export const store = createStore(reducers, composeEnhancers(applyMiddleware(loadStateMiddleware, reduxLogger, crashReporter)));

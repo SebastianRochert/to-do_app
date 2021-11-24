@@ -7,7 +7,3 @@ export function testApp() {
             Duration of delete call: ${getDeleteTime()}`;
     console.log(erg);
 }
-
-export function testGet(){
-
-}
